@@ -1,0 +1,112 @@
+<!doctype html>
+<html itemscope="" itemtype="http://schema.org/WebPage" dir="ltr" lang="en-US" language="English" charset="UTF-8" encoding="UTF-8" tabindex="-1">
+<head>
+<meta  http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<meta  http-equiv="Content-Type"    content="text/html;charset=UTF-8"/>
+<meta  name="fragment"              content="!"/>
+<meta  name="viewport"              content="height=device-height,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width=device-width,minimal-ui"/>
+<style type="text/css" media="all">
+  html,body{
+    height: 100%;
+    width:  100%;
+  }
+  *{
+    background-clip:   border-box;
+    background-origin: border-box;
+    box-sizing:        border-box;
+    direction:         ltr;
+    resize:            none;
+    text-align:        left;
+    text-size-adjust:  auto;
+    touch-action:      pan-x pan-y pinch-zoom;
+    user-drag:         none;
+    user-zoom:         none;
+    vertical-align:    baseline;
+  }
+  video{
+    display:           block;
+    object-fit:        contain;
+    background-size:   contain; 
+    object-position:   center center;
+  }
+</style>
+</head>
+<body tabindex="2">
+<video autoplay controls preload="auto" loop="true" muted="true" crossorigin="anonymous" alt="Video Player" tabindex="1" width="640" height="360" poster="">
+  <source type='video/webm;codecs="vp8.0,vorbis"'                    src="movie.webm"          />
+  <source type='video/ogg;codecs="theora,vorbis"'                    src="movie.ogv"           />
+  <source type='video/x-matroska;codecs="theora,vorbis"'             src="movie.mkv"           />
+  <source type='video/mp4;codecs="avc1.4D401E,mp4a.40.2"'            src="movie.mp4"           />
+
+  <track  type="text/vtt" srclang="en" kind="captions"    label="English Captions"    src="caps_en.vtt" default />
+  <track  type="text/vtt" srclang="en" kind="subtitles"   label="English Subtitles"   src="subs_en.vtt"         />
+  <track  type="text/vtt" srclang="en" kind="description" label="English Description" src="desc_en.vtt"         />
+  <p>No &lt;VIDEO&gt; support.</p>
+  <p><a type="application/octet-stream" download="video.mp4" href="path/to/video.mp4">Download</a>.</p>
+
+<!-- Flash fallback(s) -->
+<!--
+    <object classid="" type="application/x-shockwave-flash" width="640" height="360" data="flowplayer.swf">
+      <param name="allowscriptaccess" value="always"         />
+      <param name="allowFullScreen"   value="true"           />
+      <param name="typemustmatch"     value="true"           />
+      <param name="bgcolor"           value="#000000"        />
+      <param name="menu"              value="true"           />
+      <param name="quality"           value="high"           />
+      <param name="wmode"             value="transparent"    />
+      <param name="movie"             value="flowplayer.swf" />
+      <param name="flashvars" value='config={"clip":{"url":"video.flv","autoPlay":true,"autoBuffering":true}}' />
+      <iframe  type="application/x-shockwave-flash" quality="high" allowscriptaccess="always" allowFullScreen="true" bgcolor="#000000" width="640" height="360" src="video.flv">
+        <embed type="application/x-shockwave-flash" quality="high" allowscriptaccess="always" allowfullscreen="true" bgcolor="#000000" width="640" height="360" src="video.flv" />
+      </iframe>
+    </object>
+-->
+</video>
+<script>
+function add_events(element, ev_names, fn){
+  ev_names.forEach(function(ev_name){
+    element.addEventListener(ev_name, fn, false);
+  });
+  return true;
+}
+
+var video  = document.querySelector(video)
+   ,events = [
+ "abort"                 //Sent when playback is aborted; for example, if the media is playing and is restarted from the beginning, this event is sent.
+,"canplay"               //Sent when enough data is available that the media can be played, at least for a couple of frames.  This corresponds to the HAVE_ENOUGH_DATA readyState.
+,"canplaythrough"        //Sent when the ready state changes to CAN_PLAY_THROUGH, indicating that the entire media can be played without interruption, assuming the download rate remains at least at the current level. It will also be fired when playback is toggled between paused and playing. Note: Manually setting the currentTime will eventually fire a canplaythrough event in firefox. Other browsers might not fire this event.
+,"durationchange"        //The metadata has loaded or changed, indicating a change in duration of the media.  This is sent, for example, when the media has loaded enough that the duration is known.
+,"emptied"               //The media has become empty; for example, this event is sent if the media has already been loaded (or partially loaded), and the load() method is called to reload it.
+,"encrypted "            //The user agent has encountered initialization data in the media data.
+,"ended"                 //Sent when playback completes.
+,"error"                 //Sent when an error occurs.  The element's error attribute contains more information. See HTMLMediaElement.error for details.
+,"interruptbegin"        //Sent when audio playing on a Firefox OS device is interrupted, either because the app playing the audio is sent to the background, or audio in a higher priority audio channel begins to play. See Using the AudioChannels API for more details.
+,"interruptend"          //Sent when previously interrupted audio on a Firefox OS device commences playing again — when the interruption ends. This is when the associated app comes back to the foreground, or when the higher priority audio finished playing. See Using the AudioChannels API for more details.
+,"loadeddata"            //The first frame of the media has finished loading.
+,"loadedmetadata"        //The media's metadata has finished loading; all attributes now contain as much useful information as they're going to.
+,"loadstart"             //Sent when loading of the media begins.
+,"mozaudioavailable"     //Sent when an audio buffer is provided to the audio layer for processing; the buffer contains raw audio samples that may or may not already have been played by the time you receive the event.
+,"pause"                 //Sent when playback is paused.
+,"play"                  //Sent when playback of the media starts after having been paused; that is, when playback is resumed after a prior pause event.
+,"playing"               //Sent when the media begins to play (either for the first time, after having been paused, or after ending and then restarting).
+,"progress"              //Sent periodically to inform interested parties of progress downloading the media. Information about the current amount of the media that has been downloaded is available in the media element's buffered attribute.
+,"ratechange"            //Sent when the playback speed changes.
+,"seeked"                //Sent when a seek operation completes.
+,"seeking"               //Sent when a seek operation begins.
+,"stalled"               //Sent when the user agent is trying to fetch media data, but data is unexpectedly not forthcoming.
+,"suspend"               //Sent when loading of the media is suspended; this may happen either because the download has completed or because it has been paused for any other reason.
+,"timeupdate"            //The time indicated by the element's currentTime attribute has changed.
+,"volumechange"          //Sent when the audio volume changes (both when the volume is set and when the muted attribute is changed).
+,"waiting"               //Sent when the requested operation (such as playback) is delayed pending the completion of another operation (such as a seek).
+
+,"load"
+,"error"
+,"timeout"
+,"focus"
+,"blur"
+];
+
+add_events(video, events, console.log);
+</script>
+</body>
+</html>
