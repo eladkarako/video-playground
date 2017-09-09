@@ -63,6 +63,9 @@
 -->
 </video>
 <script>
+var video, events;
+
+
 function add_events(element, ev_names, fn){
   ev_names.forEach(function(ev_name){
     element.addEventListener(ev_name, fn, false);
@@ -70,8 +73,8 @@ function add_events(element, ev_names, fn){
   return true;
 }
 
-var video  = document.querySelector(video)
-   ,events = [
+
+events = [
  "abort"                 //Sent when playback is aborted; for example, if the media is playing and is restarted from the beginning, this event is sent.
 ,"canplay"               //Sent when enough data is available that the media can be played, at least for a couple of frames.  This corresponds to the HAVE_ENOUGH_DATA readyState.
 ,"canplaythrough"        //Sent when the ready state changes to CAN_PLAY_THROUGH, indicating that the entire media can be played without interruption, assuming the download rate remains at least at the current level. It will also be fired when playback is toggled between paused and playing. Note: Manually setting the currentTime will eventually fire a canplaythrough event in firefox. Other browsers might not fire this event.
@@ -105,6 +108,8 @@ var video  = document.querySelector(video)
 ,"focus"
 ,"blur"
 ];
+
+video = document.querySelector("video");
 
 add_events(video, events, console.log);
 </script>
